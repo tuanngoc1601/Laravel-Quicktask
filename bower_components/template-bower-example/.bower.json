@@ -1,0 +1,14 @@
+{
+  "name": "template-bower-example",
+  "homepage": "https://github.com/manhtd-1083/template-bower-example",
+  "_release": "20104a18cd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "20104a18cdf5b0ffa360c15fe54ed94ff07ba482"
+  },
+  "_source": "https://github.com/manhtd-1083/template-bower-example.git",
+  "_target": "*",
+  "_originalSource": "manhtd-1083/template-bower-example",
+  "_direct": true
+}
