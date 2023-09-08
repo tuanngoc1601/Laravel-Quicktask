@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\ValidateFormUserRequest;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         return view('users.index', [
-            'users' => User::all(),
+            'users' => User::with('tasks')->get(),
         ]);
     }
 
@@ -23,15 +25,28 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ValidateFormUserRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $user = new User();
+        
+        $user->first_name = $validated['first_name'];
+        $user->last_name = $validated['last_name'];
+        $user->email = $validated['email'];
+        $user->username = $validated['username'];
+        $user->password = Hash::make($validated['password']);
+        $user->is_admin = false;
+        $user->is_active = true;
+        $user->save();
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -39,7 +54,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -58,7 +73,7 @@ class UserController extends Controller
         $user->username = $request->name;
         $user->save();
 
-        return back();
+        return redirect()->route('users.index');
     }
 
     /**
@@ -66,6 +81,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->tasks()->delete();
+        $user->delete();
+
+        return redirect()->route('users.index');
     }
 }

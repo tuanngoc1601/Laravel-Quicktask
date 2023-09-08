@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('users', UserController::class)->middleware(['auth', 'admin']);
 
-Route::resource('/tasks', TaskController::class);
+Route::resource('/tasks', TaskController::class)->middleware(['auth', 'admin']);
 
 Route::get('language/{lang}', [LanguageController::class, 'changeLanguage'])->name('locale');
 
